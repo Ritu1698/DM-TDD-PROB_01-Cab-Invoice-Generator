@@ -48,5 +48,10 @@ public class InvoiceGeneratorTest {
         String id = "1";
         rideRepository.insertNewRider(id, rides);
         Assert.assertEquals(rides, rideRepository.ridesMap.get("1"));
+        InvoiceSummary summary = invoiceGenerator.calculateFare(rideRepository.ridesMap.get("1"));
+        InvoiceSummary checkSummary = new InvoiceSummary(2,30.0);
+        Assert.assertEquals(summary,checkSummary);
     }
+
+
 }
