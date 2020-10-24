@@ -4,9 +4,15 @@ public class InvoiceGenerator {
     private static final int COST_PER_MINUTE = 1;
     private static final double MINIMUM_COST_PER_KILOMETER = 10;
     private static final double MINIMUM_FARE = 5.0;
+    private RideRepository rideRepository = null;
 
     public static void main(String args[]) {
         System.out.println("Welcome Message");
+    }
+
+
+    public InvoiceGenerator() {
+        this.rideRepository = new RideRepository();
     }
 
     public double calculateFare(double distance, int time) {
@@ -21,4 +27,5 @@ public class InvoiceGenerator {
         }
         return new InvoiceSummary(rides.length, totalFare);
     }
+
 }
