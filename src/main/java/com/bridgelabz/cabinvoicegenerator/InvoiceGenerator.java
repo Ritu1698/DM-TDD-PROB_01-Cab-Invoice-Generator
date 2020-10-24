@@ -12,16 +12,11 @@ public class InvoiceGenerator {
         System.out.println("Welcome Message");
     }
 
-    public double calculateFare(double distance, int time) {
-        double totalFare = distance * MINIMUM_COST_PER_KILOMETER + time * COST_PER_MINUTE;
-        return Math.max(totalFare, MINIMUM_FARE);
-    }
-
     public double calculateFare(double distance, int time, String riderType) {
-        if(riderType == "normal"){
-        double totalFare = distance * MINIMUM_COST_PER_KILOMETER + time * COST_PER_MINUTE;
-        return Math.max(totalFare, MINIMUM_FARE);}
-        else {
+        if (riderType == "normal") {
+            double totalFare = distance * MINIMUM_COST_PER_KILOMETER + time * COST_PER_MINUTE;
+            return Math.max(totalFare, MINIMUM_FARE);
+        } else {
             double totalFare = distance * MINIMUM_COST_PER_KILOMETER_PREMIUM + time * COST_PER_MINUTE_PREMIUM;
             return Math.max(totalFare, MINIMUM_FARE_PREMIUM);
         }
