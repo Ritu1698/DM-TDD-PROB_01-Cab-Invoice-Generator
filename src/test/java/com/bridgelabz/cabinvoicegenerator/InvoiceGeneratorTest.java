@@ -8,6 +8,8 @@ public class InvoiceGeneratorTest {
     InvoiceGenerator invoiceGenerator = null;
     Ride[] rides = {new Ride(2.0, 5),
             new Ride(0.1, 1)};
+    Ride[] rides1 = {new Ride(2.0, 5, "premium"),
+            new Ride(0.1, 1, "premium")};
 
     @Before
     public void setUp() {
@@ -43,7 +45,7 @@ public class InvoiceGeneratorTest {
 
     @SuppressWarnings("deprecation")
     @Test
-    public void givenUserIdShouldReturnTheListOfRides() {
+    public void givenUserIdShould_ReturnTheListOfRides() {
         RideRepository rideRepository = new RideRepository();
         String id = "1";
         rideRepository.insertNewRider(id, rides);
@@ -51,6 +53,19 @@ public class InvoiceGeneratorTest {
         InvoiceSummary summary = invoiceGenerator.calculateFare(rideRepository.ridesMap.get("1"));
         InvoiceSummary checkSummary = new InvoiceSummary(2,30.0);
         Assert.assertEquals(summary,checkSummary);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    public void givenRiderType_ShouldReturnRiderTypeInvoiceSummary(){
+        RideRepository rideRepository = new RideRepository();
+        String id = "1";
+        rideRepository.insertNewRider(id, rides1);
+        Assert.assertEquals(rides1, rideRepository.ridesMap.get("1"));
+        InvoiceSummary summary = invoiceGenerator.calculateFare(rideRepository.ridesMap.get("1"));
+        InvoiceSummary checkSummary = new InvoiceSummary(2,60.0);
+        Assert.assertEquals(summary,checkSummary);
+
     }
 
 
