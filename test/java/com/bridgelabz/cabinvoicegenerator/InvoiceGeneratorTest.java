@@ -4,19 +4,28 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 public class InvoiceGeneratorTest {
     InvoiceGenerator invoiceGenerator = null;
     InvoiceSummary summary = null;
     InvoiceSummary expectedSummary = null;
-    Ride[] rides_premium = {new Ride(2.0, 5, "premium"),
-            new Ride(0.1, 1, "premium")};
-
-    Ride[] rides_normal = {new Ride(2.0, 5, "normal"),
-            new Ride(0.1, 1, "normal")};
+    ArrayList<Ride> rideArrayListPremium = null;
+    ArrayList<Ride> rideArrayListNormal = null;
+    ArrayList<Ride>rideArrayList = null;
 
     @Before
     public void setUp() {
         invoiceGenerator = new InvoiceGenerator();
+        rideArrayListPremium = new ArrayList<>();
+        rideArrayListNormal = new ArrayList<>();
+        rideArrayList = new ArrayList<>();
+        rideArrayListNormal.add(new Ride(2.0, 5, "normal"));
+        rideArrayListNormal.add(new Ride(0.1, 1, "normal"));
+        rideArrayListPremium.add(new Ride(2.0, 5, "premium"));
+        rideArrayListPremium.add(new Ride(0.1, 1, "premium"));
+        rideArrayList.add(new Ride(2.0, 5, "normal"));
+        rideArrayList.add(new Ride(0.1, 1, "normal"));
     }
 
     @Test
@@ -40,36 +49,36 @@ public class InvoiceGeneratorTest {
     public void givenDistanceAndTime_whenMultipleRides_shouldReturnInvoiceSummary() {
 
         InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 30.0);
-        InvoiceSummary summary = invoiceGenerator.calculateFare(rides_normal);
+        InvoiceSummary summary = invoiceGenerator.calculateFare(rideArrayListNormal);
         Assert.assertEquals(expectedInvoiceSummary, summary);
         Assert.assertEquals(expectedInvoiceSummary.getAverageFare(), summary.getAverageFare(), 0.0);
 
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void givenUserIdShould_ReturnTheListOfRides() {
         RideRepository rideRepository = new RideRepository();
         String id = "1";
-        rideRepository.insertNewRider(id, rides_normal);
-        Assert.assertEquals(rides_normal, rideRepository.ridesMap.get("1"));
-        summary = invoiceGenerator.calculateFare(rideRepository.ridesMap.get("1"));
+        rideRepository.addNewRider(id, rideArrayListNormal);
+        Assert.assertEquals(rideArrayListNormal, rideRepository.getRides("1"));
+        summary = invoiceGenerator.calculateFare(rideRepository.getRides("1"));
         expectedSummary = new InvoiceSummary(2, 30.0);
         Assert.assertEquals(summary, expectedSummary);
+        rideArrayListNormal.add(new Ride(2.0, 5, "normal"));
+        rideArrayListNormal.add(new Ride(0.1, 1, "normal"));
+        rideRepository.addNewRider(id,rideArrayList);
+        Assert.assertEquals(rideArrayListNormal, rideRepository.getRides("1"));
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void givenRiderType_ShouldReturnRiderTypeInvoiceSummary() {
         RideRepository rideRepository = new RideRepository();
         String id = "1";
-        rideRepository.insertNewRider(id, rides_premium);
-        Assert.assertEquals(rides_premium, rideRepository.ridesMap.get("1"));
-        summary = invoiceGenerator.calculateFare(rideRepository.ridesMap.get("1"));
+        rideRepository.addNewRider(id, rideArrayListPremium);
+        Assert.assertEquals(rideArrayListPremium, rideRepository.getRides("1"));
+        summary = invoiceGenerator.calculateFare(rideRepository.getRides("1"));
         expectedSummary = new InvoiceSummary(2, 60.0);
         Assert.assertEquals(summary, expectedSummary);
 
     }
-
-
 }
