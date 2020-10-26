@@ -3,6 +3,7 @@ package com.bridgelabz.cabinvoicegenerator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import com.bridgelabz.cabinvoicegenerator.Ride.TypesOfRider;
 
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ public class InvoiceGeneratorTest {
     InvoiceSummary expectedSummary = null;
     ArrayList<Ride> rideArrayListPremium = null;
     ArrayList<Ride> rideArrayListNormal = null;
-    ArrayList<Ride>rideArrayList = null;
+    ArrayList<Ride> rideArrayList = null;
 
     @Before
     public void setUp() {
@@ -20,19 +21,19 @@ public class InvoiceGeneratorTest {
         rideArrayListPremium = new ArrayList<>();
         rideArrayListNormal = new ArrayList<>();
         rideArrayList = new ArrayList<>();
-        rideArrayListNormal.add(new Ride(2.0, 5, "normal"));
-        rideArrayListNormal.add(new Ride(0.1, 1, "normal"));
-        rideArrayListPremium.add(new Ride(2.0, 5, "premium"));
-        rideArrayListPremium.add(new Ride(0.1, 1, "premium"));
-        rideArrayList.add(new Ride(2.0, 5, "normal"));
-        rideArrayList.add(new Ride(0.1, 1, "normal"));
+        rideArrayListNormal.add(new Ride(2.0, 5, TypesOfRider.NORMAL));
+        rideArrayListNormal.add(new Ride(0.1, 1, TypesOfRider.NORMAL));
+        rideArrayListPremium.add(new Ride(2.0, 5, TypesOfRider.PREMIUM));
+        rideArrayListPremium.add(new Ride(0.1, 1, TypesOfRider.PREMIUM));
+        rideArrayList.add(new Ride(2.0, 5, TypesOfRider.NORMAL));
+        rideArrayList.add(new Ride(0.1, 1, TypesOfRider.NORMAL));
     }
 
     @Test
     public void givenDistanceAndTime_shouldReturnTotalFare() {
         double distance = 2.0;
         int time = 5;
-        double totalFare = invoiceGenerator.calculateFare(distance, time, "normal");
+        double totalFare = invoiceGenerator.calculateFare(distance, time, TypesOfRider.NORMAL);
         Assert.assertEquals(25, totalFare, 0.0);
     }
 
@@ -40,7 +41,7 @@ public class InvoiceGeneratorTest {
     public void givenDistanceAndTime_whenLessThanMinimumFare_shouldReturnMinimumFare() {
         double distance = 0.1;
         int time = 1;
-        double totalFare = invoiceGenerator.calculateFare(distance, time, "normal");
+        double totalFare = invoiceGenerator.calculateFare(distance, time, TypesOfRider.NORMAL);
         Assert.assertEquals(5.0, totalFare, 0.00);
 
     }
@@ -64,9 +65,9 @@ public class InvoiceGeneratorTest {
         summary = invoiceGenerator.calculateFare(rideRepository.getRides("1"));
         expectedSummary = new InvoiceSummary(2, 30.0);
         Assert.assertEquals(summary, expectedSummary);
-        rideArrayListNormal.add(new Ride(2.0, 5, "normal"));
-        rideArrayListNormal.add(new Ride(0.1, 1, "normal"));
-        rideRepository.addNewRider(id,rideArrayList);
+        rideArrayListNormal.add(new Ride(2.0, 5, TypesOfRider.NORMAL));
+        rideArrayListNormal.add(new Ride(0.1, 1, TypesOfRider.NORMAL));
+        rideRepository.addNewRider(id, rideArrayList);
         Assert.assertEquals(rideArrayListNormal, rideRepository.getRides("1"));
     }
 
