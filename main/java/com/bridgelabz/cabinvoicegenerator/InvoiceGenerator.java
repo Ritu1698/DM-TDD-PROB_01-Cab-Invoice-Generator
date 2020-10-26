@@ -14,20 +14,28 @@ public class InvoiceGenerator {
         System.out.println("Welcome Message");
     }
 
-    public double calculateFare(double distance, int time, String riderType) {
-        if (riderType == "normal") {
-            double totalFare = distance * MINIMUM_COST_PER_KILOMETER + time * COST_PER_MINUTE;
-            return Math.max(totalFare, MINIMUM_FARE);
+    public double normalFareCalculation(double distance, int time) {
+        double totalFare = distance * MINIMUM_COST_PER_KILOMETER + time * COST_PER_MINUTE;
+        return Math.max(totalFare, MINIMUM_FARE);
+    }
+
+    public double permiumFareCalculation(double distance, int time) {
+        double totalFare = distance * MINIMUM_COST_PER_KILOMETER_PREMIUM + time * COST_PER_MINUTE_PREMIUM;
+        return Math.max(totalFare, MINIMUM_FARE_PREMIUM);
+    }
+
+    public double calculateFare(double distance, int time, Ride.TypesOfRider typesOfRider) {
+        if (typesOfRider == Ride.TypesOfRider.NORMAL) {
+            return normalFareCalculation(distance, time);
         } else {
-            double totalFare = distance * MINIMUM_COST_PER_KILOMETER_PREMIUM + time * COST_PER_MINUTE_PREMIUM;
-            return Math.max(totalFare, MINIMUM_FARE_PREMIUM);
+            return permiumFareCalculation(distance, time);
         }
     }
 
     public InvoiceSummary calculateFare(ArrayList<Ride> rides) {
         double totalFare = 0;
         for (Ride ride : rides) {
-            totalFare += calculateFare(ride.distance, ride.time, ride.riderType);
+            totalFare += calculateFare(ride.distance, ride.time, ride.typeOfRider);
         }
         return new InvoiceSummary(rides.size(), totalFare);
     }

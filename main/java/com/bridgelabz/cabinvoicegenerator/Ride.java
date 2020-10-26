@@ -3,11 +3,15 @@ package com.bridgelabz.cabinvoicegenerator;
 public class Ride {
     public double distance;
     public int time;
-    public String riderType;
+    public TypesOfRider typeOfRider;
 
-    public Ride(double distance, int time, String riderType) {
+    enum TypesOfRider {
+        PREMIUM, NORMAL
+    }
+
+    public Ride(double distance, int time, TypesOfRider typeOfRider) {
         this.distance = distance;
         this.time = time;
-        this.riderType = riderType;
+        this.typeOfRider = typeOfRider;
     }
 }
